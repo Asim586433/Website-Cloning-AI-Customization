@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Cloning & AI Customization</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --white: #ffffff;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .project-overview {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .project-overview h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .deliverables {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .deliverable-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: transform 0.3s ease;
+        }
+        
+        .deliverable-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .deliverable-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .deliverable-card p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .workflow {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .workflow-step {
+            display: flex;
+            align-items: center;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .step-number {
+            background-color: var(--primary-color);
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex-grow: 1;
+        }
+        
+        .step-content h3 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .ai-customization {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .customization-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .color-picker {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: transform 0.2s ease;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.active {
+            border-color: var(--secondary-color);
+        }
+        
+        .logo-preview {
+            width: 150px;
+            height: 80px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .gallery-item {
+            height: 150px;
+            background-color: #eee;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .secondary-btn {
+            background-color: var(--secondary-color);
+        }
+        
+        .secondary-btn:hover {
+            background-color: #1a252f;
+        }
+        
+        .preview-section {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .website-preview {
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            height: 400px;
+            overflow: hidden;
+            margin-top: 1.5rem;
+            position: relative;
+        }
+        
+        .preview-header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .preview-content {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .preview-main {
+            background-color: #f5f5f5;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+        }
+        
+        .preview-sidebar {
+            background-color: #f5f5f5;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+        }
+        
+        footer {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .workflow-step {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .step-number {
+                margin-bottom: 1rem;
+            }
+            
+            .preview-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Website Cloning & AI Customization</h1>
+        <p>Prototype for Upwork Project</p>
+    </header>
+    
+    <div class="container">
+        <section class="project-overview">
+            <h2>Project Overview</h2>
+            <p>This prototype demonstrates the process of cloning an existing website and customizing it using AI tools to change colors, logos, and images.</p>
+            
+            <div class="deliverables">
+                <div class="deliverable-card">
+                    <h3>Clone Existing Website</h3>
+                    <p>Replicate the structure and functionality of the target website.</p>
+                </div>
+                <div class="deliverable-card">
+                    <h3>Change Website Colors</h3>
+                    <p>Use AI tools to customize the color scheme according to brand guidelines.</p>
+                </div>
+                <div class="deliverable-card">
+                    <h3>Replace Logo</h3>
+                    <p>Generate and integrate a new AI-designed logo.</p>
+                </div>
+                <div class="deliverable-card">
+                    <h3>Modify Images</h3>
+                    <p>Use AI tools to enhance and customize website images.</p>
+                </div>
+                <div class="deliverable-card">
+                    <h3>Create New Images</h3>
+                    <p>Generate original AI images to enhance visual appeal.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="workflow">
+            <div class="workflow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Website Analysis & Cloning</h3>
+                    <p>Analyze the target website structure and clone its layout and functionality.</p>
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>AI-Powered Customization</h3>
+                    <p>Use AI tools to customize colors, generate logos, and modify images.</p>
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Integration & Testing</h3>
+                    <p>Integrate all customized elements and thoroughly test functionality.</p>
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Final Delivery</h3>
+                    <p>Deliver the fully customized website ready for deployment.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="ai-customization">
+            <h2>AI-Powered Customization</h2>
+            <p>Use the controls below to customize the website appearance with AI assistance.</p>
+            
+            <div class="customization-controls">
+                <div class="control-group">
+                    <label>Color Scheme</label>
+                    <div class="color-picker">
+                        <div class="color-option active" style="background-color: #3498db;" data-color="#3498db"></div>
+                        <div class="color-option" style="background-color: #e74c3c;" data-color="#e74c3c"></div>
+                        <div class="color-option" style="background-color: #2ecc71;" data-color="#2ecc71"></div>
+                        <div class="color-option" style="background-color: #9b59b6;" data-color="#9b59b6"></div>
+                        <div class="color-option" style="background-color: #f39c12;" data-color="#f39c12"></div>
+                    </div>
+                    <button id="generate-colors">AI Suggest Colors</button>
+                </div>
+                
+                <div class="control-group">
+                    <label>Logo Design</label>
+                    <div class="logo-preview" id="logo-preview">Your Logo</div>
+                    <button id="generate-logo">AI Generate Logo</button>
+                </div>
+                
+                <div class="control-group">
+                    <label>Website Images</label>
+                    <div class="image-gallery" id="image-gallery">
+                        <div class="gallery-item">Image 1</div>
+                        <div class="gallery-item">Image 2</div>
+                        <div class="gallery-item">Image 3</div>
+                    </div>
+                    <button id="generate-images">AI Generate Images</button>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="apply-changes">Apply Customizations</button>
+                <button class="secondary-btn" id="reset-changes">Reset to Default</button>
+            </div>
+        </section>
+        
+        <section class="preview-section">
+            <h2>Website Preview</h2>
+            <p>See how your customized website will look:</p>
+            
+            <div class="website-preview" id="website-preview">
+                <div class="preview-header" id="preview-header">
+                    <h3 id="preview-title">Your Business Name</h3>
+                </div>
+                <div class="preview-content">
+                    <div class="preview-main">
+                        <h4>Welcome to Our Website</h4>
+                        <p>This is a preview of your customized website with AI-generated elements.</p>
+                        <div class="image-gallery" style="grid-template-columns: repeat(2, 1fr); margin: 1rem 0;">
+                            <div class="gallery-item">Content Image 1</div>
+                            <div class="gallery-item">Content Image 2</div>
+                        </div>
+                    </div>
+                    <div class="preview-sidebar">
+                        <h4>Sidebar</h4>
+                        <p>Additional content and navigation elements.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>Website Cloning & AI Customization Prototype | Upwork Project</p>
+    </footer>
+
+    <script>
+        // Color customization functionality
+        const colorOptions = document.querySelectorAll('.color-option');
+        const generateColorsBtn = document.getElementById('generate-colors');
+        const applyChangesBtn = document.getElementById('apply-changes');
+        const resetChangesBtn = document.getElementById('reset-changes');
+        const generateLogoBtn = document.getElementById('generate-logo');
+        const generateImagesBtn = document.getElementById('generate-images');
+        const logoPreview = document.getElementById('logo-preview');
+        const imageGallery = document.getElementById('image-gallery');
+        const previewHeader = document.getElementById('preview-header');
+        const previewTitle = document.getElementById('preview-title');
+        
+        let selectedColor = '#3498db';
+        
+        // Color selection
+        colorOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                colorOptions.forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+                selectedColor = this.getAttribute('data-color');
+            });
+        });
+        
+        // AI color generation simulation
+        generateColorsBtn.addEventListener('click', function() {
+            const colors = ['#3498db', '#e74c3c', '#2ecc71', '#9b59b6', '#f39c12'];
+            const randomColors = [...colors].sort(() => 0.5 - Math.random()).slice(0, 5);
+            
+            colorOptions.forEach((option, index) => {
+                option.style.backgroundColor = randomColors[index];
+                option.setAttribute('data-color', randomColors[index]);
+            });
+            
+            // Select the first color by default
+            colorOptions.forEach(opt => opt.classList.remove('active'));
+            colorOptions[0].classList.add('active');
+            selectedColor = randomColors[0];
+            
+            alert('AI has generated a new color palette for your website!');
+        });
+        
+        // AI logo generation simulation
+        generateLogoBtn.addEventListener('click', function() {
+            const logos = [
+                { text: 'TechVision', color: '#e74c3c' },
+                { text: 'InnovateCo', color: '#2ecc71' },
+                { text: 'FutureDesign', color: '#9b59b6' },
+                { text: 'SmartSolutions', color: '#f39c12' }
+            ];
+            
+            const randomLogo = logos[Math.floor(Math.random() * logos.length)];
+            logoPreview.textContent = randomLogo.text;
+            logoPreview.style.color = randomLogo.color;
+            logoPreview.style.border = `2px solid ${randomLogo.color}`;
+            
+            alert('AI has generated a new logo design for your website!');
+        });
+        
+        // AI image generation simulation
+        generateImagesBtn.addEventListener('click', function() {
+            const imagePlaceholders = [
+                'AI Business Image',
+                'AI Team Photo',
+                'AI Product Shot',
+                'AI Office Space',
+                'AI Creative Design'
+            ];
+            
+            // Clear existing images
+            imageGallery.innerHTML = '';
+            
+            // Add new AI-generated images
+            imagePlaceholders.forEach(text => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.textContent = text;
+                galleryItem.style.backgroundColor = getRandomLightColor();
+                imageGallery.appendChild(galleryItem);
+            });
+            
+            alert('AI has generated new images for your website!');
+        });
+        
+        // Apply customizations to preview
+        applyChangesBtn.addEventListener('click', function() {
+            // Update header color
+            previewHeader.style.backgroundColor = selectedColor;
+            
+            // Update logo in preview if changed
+            if (logoPreview.textContent !== 'Your Logo') {
+                previewTitle.textContent = logoPreview.textContent;
+                previewTitle.style.color = logoPreview.style.color;
+            }
+            
+            alert('All customizations have been applied to your website!');
+        });
+        
+        // Reset to default
+        resetChangesBtn.addEventListener('click', function() {
+            // Reset colors
+            colorOptions.forEach((option, index) => {
+                const defaultColors = ['#3498db', '#e74c3c', '#2ecc71', '#9b59b6', '#f39c12'];
+                option.style.backgroundColor = defaultColors[index];
+                option.setAttribute('data-color', defaultColors[index]);
+            });
+            
+            colorOptions.forEach(opt => opt.classList.remove('active'));
+            colorOptions[0].classList.add('active');
+            selectedColor = '#3498db';
+            
+            // Reset logo
+            logoPreview.textContent = 'Your Logo';
+            logoPreview.style.color = '#666';
+            logoPreview.style.border = 'none';
+            
+            // Reset images
+            imageGallery.innerHTML = `
+                <div class="gallery-item">Image 1</div>
+                <div class="gallery-item">Image 2</div>
+                <div class="gallery-item">Image 3</div>
+            `;
+            
+            // Reset preview
+            previewHeader.style.backgroundColor = '#3498db';
+            previewTitle.textContent = 'Your Business Name';
+            previewTitle.style.color = 'white';
+            
+            alert('All customizations have been reset to default!');
+        });
+        
+        // Helper function to generate random light colors
+        function getRandomLightColor() {
+            const hue = Math.floor(Math.random() * 360);
+            return `hsl(${hue}, 70%, 85%)`;
+        }
+        
+        // Initialize with some AI-generated content
+        window.addEventListener('DOMContentLoaded', function() {
+            // Simulate initial AI content generation
+            setTimeout(() => {
+                generateColorsBtn.click();
+                generateLogoBtn.click();
+                generateImagesBtn.click();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
