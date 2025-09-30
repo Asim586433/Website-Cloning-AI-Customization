@@ -14,6 +14,7 @@
             --white: #ffffff;
             --border-radius: 8px;
             --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
         }
         
         * {
@@ -68,11 +69,13 @@
             border-radius: var(--border-radius);
             padding: 1.5rem;
             box-shadow: var(--box-shadow);
-            transition: transform 0.3s ease;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
         }
         
         .deliverable-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
         
         .deliverable-card h3 {
@@ -99,6 +102,11 @@
             border-radius: var(--border-radius);
             padding: 1.5rem;
             box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+        
+        .workflow-step:hover {
+            transform: translateX(5px);
         }
         
         .step-number {
@@ -152,6 +160,7 @@
         .color-picker {
             display: flex;
             gap: 0.5rem;
+            flex-wrap: wrap;
         }
         
         .color-option {
@@ -160,7 +169,7 @@
             border-radius: 50%;
             cursor: pointer;
             border: 3px solid transparent;
-            transition: transform 0.2s ease;
+            transition: var(--transition);
         }
         
         .color-option:hover {
@@ -169,6 +178,7 @@
         
         .color-option.active {
             border-color: var(--secondary-color);
+            transform: scale(1.1);
         }
         
         .logo-preview {
@@ -182,6 +192,7 @@
             margin: 1rem 0;
             font-weight: bold;
             color: #666;
+            transition: var(--transition);
         }
         
         .image-gallery {
@@ -200,7 +211,8 @@
             justify-content: center;
             overflow: hidden;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: var(--transition);
+            position: relative;
         }
         
         .gallery-item:hover {
@@ -221,17 +233,25 @@
             border-radius: var(--border-radius);
             cursor: pointer;
             font-weight: 600;
-            transition: background-color 0.3s ease;
+            transition: var(--transition);
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
         }
         
         button:hover {
             background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
         }
         
         .action-buttons {
             display: flex;
             gap: 1rem;
             margin-top: 2rem;
+            flex-wrap: wrap;
         }
         
         .secondary-btn {
@@ -240,6 +260,14 @@
         
         .secondary-btn:hover {
             background-color: #1a252f;
+        }
+        
+        .danger-btn {
+            background-color: var(--accent-color);
+        }
+        
+        .danger-btn:hover {
+            background-color: #c0392b;
         }
         
         .preview-section {
@@ -257,6 +285,7 @@
             overflow: hidden;
             margin-top: 1.5rem;
             position: relative;
+            transition: var(--transition);
         }
         
         .preview-header {
@@ -264,6 +293,7 @@
             color: var(--white);
             padding: 1rem;
             text-align: center;
+            transition: var(--transition);
         }
         
         .preview-content {
@@ -271,18 +301,39 @@
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 1.5rem;
+            height: calc(100% - 60px);
         }
         
         .preview-main {
             background-color: #f5f5f5;
             padding: 1rem;
             border-radius: var(--border-radius);
+            transition: var(--transition);
         }
         
         .preview-sidebar {
             background-color: #f5f5f5;
             padding: 1rem;
             border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2ecc71;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
         }
         
         footer {
@@ -291,6 +342,21 @@
             text-align: center;
             padding: 1.5rem 0;
             margin-top: 3rem;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.5s ease;
         }
         
         @media (max-width: 768px) {
@@ -305,6 +371,14 @@
             
             .preview-content {
                 grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
             }
         }
     </style>
@@ -350,6 +424,10 @@
                 <div class="step-content">
                     <h3>Website Analysis & Cloning</h3>
                     <p>Analyze the target website structure and clone its layout and functionality.</p>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-step-1"></div>
+                    </div>
+                    <button id="test-clone">Test Cloning Process</button>
                 </div>
             </div>
             <div class="workflow-step">
@@ -357,6 +435,9 @@
                 <div class="step-content">
                     <h3>AI-Powered Customization</h3>
                     <p>Use AI tools to customize colors, generate logos, and modify images.</p>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-step-2"></div>
+                    </div>
                 </div>
             </div>
             <div class="workflow-step">
@@ -364,6 +445,10 @@
                 <div class="step-content">
                     <h3>Integration & Testing</h3>
                     <p>Integrate all customized elements and thoroughly test functionality.</p>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-step-3"></div>
+                    </div>
+                    <button id="test-all">Run Complete Test</button>
                 </div>
             </div>
             <div class="workflow-step">
@@ -371,6 +456,10 @@
                 <div class="step-content">
                     <h3>Final Delivery</h3>
                     <p>Deliver the fully customized website ready for deployment.</p>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-step-4"></div>
+                    </div>
+                    <button id="simulate-delivery">Simulate Delivery</button>
                 </div>
             </div>
         </section>
@@ -390,12 +479,14 @@
                         <div class="color-option" style="background-color: #f39c12;" data-color="#f39c12"></div>
                     </div>
                     <button id="generate-colors">AI Suggest Colors</button>
+                    <button id="test-colors">Test Color Function</button>
                 </div>
                 
                 <div class="control-group">
                     <label>Logo Design</label>
                     <div class="logo-preview" id="logo-preview">Your Logo</div>
                     <button id="generate-logo">AI Generate Logo</button>
+                    <button id="test-logo">Test Logo Function</button>
                 </div>
                 
                 <div class="control-group">
@@ -406,12 +497,14 @@
                         <div class="gallery-item">Image 3</div>
                     </div>
                     <button id="generate-images">AI Generate Images</button>
+                    <button id="test-images">Test Image Function</button>
                 </div>
             </div>
             
             <div class="action-buttons">
                 <button id="apply-changes">Apply Customizations</button>
                 <button class="secondary-btn" id="reset-changes">Reset to Default</button>
+                <button class="danger-btn" id="test-all-buttons">Test All Buttons</button>
             </div>
         </section>
         
@@ -431,12 +524,23 @@
                             <div class="gallery-item">Content Image 1</div>
                             <div class="gallery-item">Content Image 2</div>
                         </div>
+                        <button id="preview-button">Sample Button</button>
                     </div>
                     <div class="preview-sidebar">
                         <h4>Sidebar</h4>
                         <p>Additional content and navigation elements.</p>
+                        <ul>
+                            <li>Navigation Item 1</li>
+                            <li>Navigation Item 2</li>
+                            <li>Navigation Item 3</li>
+                        </ul>
                     </div>
                 </div>
+            </div>
+            
+            <div class="action-buttons" style="margin-top: 1.5rem;">
+                <button id="test-preview">Test Preview Elements</button>
+                <button id="interaction-test">Test Interactions</button>
             </div>
         </section>
     </div>
@@ -445,8 +549,12 @@
         <p>Website Cloning & AI Customization Prototype | Upwork Project</p>
     </footer>
 
+    <div class="notification" id="notification">
+        <span id="notification-text">Test completed successfully!</span>
+    </div>
+
     <script>
-        // Color customization functionality
+        // DOM Elements
         const colorOptions = document.querySelectorAll('.color-option');
         const generateColorsBtn = document.getElementById('generate-colors');
         const applyChangesBtn = document.getElementById('apply-changes');
@@ -457,15 +565,67 @@
         const imageGallery = document.getElementById('image-gallery');
         const previewHeader = document.getElementById('preview-header');
         const previewTitle = document.getElementById('preview-title');
+        const websitePreview = document.getElementById('website-preview');
+        const previewMain = document.querySelector('.preview-main');
+        const previewSidebar = document.querySelector('.preview-sidebar');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notification-text');
         
+        // Test buttons
+        const testCloneBtn = document.getElementById('test-clone');
+        const testAllBtn = document.getElementById('test-all');
+        const testColorsBtn = document.getElementById('test-colors');
+        const testLogoBtn = document.getElementById('test-logo');
+        const testImagesBtn = document.getElementById('test-images');
+        const testAllButtonsBtn = document.getElementById('test-all-buttons');
+        const testPreviewBtn = document.getElementById('test-preview');
+        const interactionTestBtn = document.getElementById('interaction-test');
+        const simulateDeliveryBtn = document.getElementById('simulate-delivery');
+        
+        // Progress bars
+        const progressStep1 = document.getElementById('progress-step-1');
+        const progressStep2 = document.getElementById('progress-step-2');
+        const progressStep3 = document.getElementById('progress-step-3');
+        const progressStep4 = document.getElementById('progress-step-4');
+        
+        // State variables
         let selectedColor = '#3498db';
+        let currentLogo = 'Your Logo';
+        let testMode = false;
         
-        // Color selection
+        // Utility Functions
+        function showNotification(message, duration = 3000) {
+            notificationText.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, duration);
+        }
+        
+        function updateProgress(progressBar, percentage) {
+            progressBar.style.width = `${percentage}%`;
+        }
+        
+        function simulateLoading(action, duration = 1000) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    action();
+                    resolve();
+                }, duration);
+            });
+        }
+        
+        // Color customization functionality
         colorOptions.forEach(option => {
             option.addEventListener('click', function() {
                 colorOptions.forEach(opt => opt.classList.remove('active'));
                 this.classList.add('active');
                 selectedColor = this.getAttribute('data-color');
+                
+                if (testMode) {
+                    showNotification('Color selection working correctly');
+                }
             });
         });
         
@@ -484,7 +644,11 @@
             colorOptions[0].classList.add('active');
             selectedColor = randomColors[0];
             
-            alert('AI has generated a new color palette for your website!');
+            showNotification('AI has generated a new color palette for your website!');
+            
+            if (testMode) {
+                updateProgress(progressStep2, 30);
+            }
         });
         
         // AI logo generation simulation
@@ -500,8 +664,13 @@
             logoPreview.textContent = randomLogo.text;
             logoPreview.style.color = randomLogo.color;
             logoPreview.style.border = `2px solid ${randomLogo.color}`;
+            currentLogo = randomLogo.text;
             
-            alert('AI has generated a new logo design for your website!');
+            showNotification('AI has generated a new logo design for your website!');
+            
+            if (testMode) {
+                updateProgress(progressStep2, 60);
+            }
         });
         
         // AI image generation simulation
@@ -526,7 +695,11 @@
                 imageGallery.appendChild(galleryItem);
             });
             
-            alert('AI has generated new images for your website!');
+            showNotification('AI has generated new images for your website!');
+            
+            if (testMode) {
+                updateProgress(progressStep2, 100);
+            }
         });
         
         // Apply customizations to preview
@@ -535,12 +708,20 @@
             previewHeader.style.backgroundColor = selectedColor;
             
             // Update logo in preview if changed
-            if (logoPreview.textContent !== 'Your Logo') {
-                previewTitle.textContent = logoPreview.textContent;
+            if (currentLogo !== 'Your Logo') {
+                previewTitle.textContent = currentLogo;
                 previewTitle.style.color = logoPreview.style.color;
             }
             
-            alert('All customizations have been applied to your website!');
+            // Update preview section backgrounds
+            previewMain.style.backgroundColor = lightenColor(selectedColor, 80);
+            previewSidebar.style.backgroundColor = lightenColor(selectedColor, 80);
+            
+            showNotification('All customizations have been applied to your website!');
+            
+            if (testMode) {
+                updateProgress(progressStep3, 50);
+            }
         });
         
         // Reset to default
@@ -560,6 +741,7 @@
             logoPreview.textContent = 'Your Logo';
             logoPreview.style.color = '#666';
             logoPreview.style.border = 'none';
+            currentLogo = 'Your Logo';
             
             // Reset images
             imageGallery.innerHTML = `
@@ -572,23 +754,217 @@
             previewHeader.style.backgroundColor = '#3498db';
             previewTitle.textContent = 'Your Business Name';
             previewTitle.style.color = 'white';
+            previewMain.style.backgroundColor = '#f5f5f5';
+            previewSidebar.style.backgroundColor = '#f5f5f5';
             
-            alert('All customizations have been reset to default!');
+            showNotification('All customizations have been reset to default!');
         });
         
-        // Helper function to generate random light colors
+        // Test Functions
+        testCloneBtn.addEventListener('click', function() {
+            testMode = true;
+            showNotification('Testing website cloning process...');
+            
+            simulateLoading(() => {
+                updateProgress(progressStep1, 100);
+                showNotification('Website cloning test completed successfully!');
+            }, 2000);
+        });
+        
+        testColorsBtn.addEventListener('click', function() {
+            testMode = true;
+            showNotification('Testing color customization...');
+            
+            // Test color selection
+            colorOptions[1].click();
+            
+            simulateLoading(() => {
+                // Test AI color generation
+                generateColorsBtn.click();
+                showNotification('Color customization test completed successfully!');
+            }, 1500);
+        });
+        
+        testLogoBtn.addEventListener('click', function() {
+            testMode = true;
+            showNotification('Testing logo generation...');
+            
+            simulateLoading(() => {
+                generateLogoBtn.click();
+                showNotification('Logo generation test completed successfully!');
+            }, 1500);
+        });
+        
+        testImagesBtn.addEventListener('click', function() {
+            testMode = true;
+            showNotification('Testing image generation...');
+            
+            simulateLoading(() => {
+                generateImagesBtn.click();
+                showNotification('Image generation test completed successfully!');
+            }, 1500);
+        });
+        
+        testPreviewBtn.addEventListener('click', function() {
+            testMode = true;
+            showNotification('Testing preview elements...');
+            
+            // Apply some changes to see in preview
+            colorOptions[2].click();
+            generateLogoBtn.click();
+            
+            simulateLoading(() => {
+                applyChangesBtn.click();
+                showNotification('Preview test completed successfully!');
+            }, 1500);
+        });
+        
+        interactionTestBtn.addEventListener('click', function() {
+            testMode = true;
+            showNotification('Testing all interactions...');
+            
+            // Simulate user interactions
+            const interactions = [
+                () => colorOptions[3].click(),
+                () => generateColorsBtn.click(),
+                () => generateLogoBtn.click(),
+                () => generateImagesBtn.click(),
+                () => applyChangesBtn.click(),
+                () => resetChangesBtn.click()
+            ];
+            
+            let i = 0;
+            const executeNext = () => {
+                if (i < interactions.length) {
+                    interactions[i]();
+                    i++;
+                    setTimeout(executeNext, 500);
+                } else {
+                    showNotification('All interactions tested successfully!');
+                    updateProgress(progressStep3, 100);
+                }
+            };
+            
+            executeNext();
+        });
+        
+        testAllButtonsBtn.addEventListener('click', function() {
+            testMode = true;
+            showNotification('Testing all buttons...');
+            
+            const buttons = [
+                generateColorsBtn,
+                generateLogoBtn,
+                generateImagesBtn,
+                applyChangesBtn,
+                resetChangesBtn
+            ];
+            
+            let i = 0;
+            const testNextButton = () => {
+                if (i < buttons.length) {
+                    buttons[i].click();
+                    i++;
+                    setTimeout(testNextButton, 800);
+                } else {
+                    showNotification('All buttons tested successfully!');
+                }
+            };
+            
+            testNextButton();
+        });
+        
+        testAllBtn.addEventListener('click', function() {
+            testMode = true;
+            showNotification('Running complete system test...');
+            
+            // Reset progress
+            updateProgress(progressStep1, 0);
+            updateProgress(progressStep2, 0);
+            updateProgress(progressStep3, 0);
+            updateProgress(progressStep4, 0);
+            
+            const testSteps = [
+                () => {
+                    testCloneBtn.click();
+                    updateProgress(progressStep1, 100);
+                },
+                () => {
+                    generateColorsBtn.click();
+                    updateProgress(progressStep2, 30);
+                },
+                () => {
+                    generateLogoBtn.click();
+                    updateProgress(progressStep2, 60);
+                },
+                () => {
+                    generateImagesBtn.click();
+                    updateProgress(progressStep2, 100);
+                },
+                () => {
+                    applyChangesBtn.click();
+                    updateProgress(progressStep3, 50);
+                },
+                () => {
+                    interactionTestBtn.click();
+                    updateProgress(progressStep3, 100);
+                },
+                () => {
+                    updateProgress(progressStep4, 100);
+                    showNotification('Complete system test finished successfully!');
+                    testMode = false;
+                }
+            ];
+            
+            let i = 0;
+            const executeTestStep = () => {
+                if (i < testSteps.length) {
+                    testSteps[i]();
+                    i++;
+                    setTimeout(executeTestStep, 1500);
+                }
+            };
+            
+            executeTestStep();
+        });
+        
+        simulateDeliveryBtn.addEventListener('click', function() {
+            showNotification('Simulating project delivery...');
+            
+            simulateLoading(() => {
+                updateProgress(progressStep4, 100);
+                showNotification('Project delivered successfully! Website is ready for deployment.', 5000);
+            }, 2000);
+        });
+        
+        // Helper Functions
         function getRandomLightColor() {
             const hue = Math.floor(Math.random() * 360);
             return `hsl(${hue}, 70%, 85%)`;
+        }
+        
+        function lightenColor(color, percent) {
+            const num = parseInt(color.replace("#", ""), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) + amt;
+            const G = (num >> 8 & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            
+            return `#${(
+                0x1000000 +
+                (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
+                (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
+                (B < 255 ? (B < 1 ? 0 : B) : 255)
+            )
+                .toString(16)
+                .slice(1)}`;
         }
         
         // Initialize with some AI-generated content
         window.addEventListener('DOMContentLoaded', function() {
             // Simulate initial AI content generation
             setTimeout(() => {
-                generateColorsBtn.click();
-                generateLogoBtn.click();
-                generateImagesBtn.click();
+                showNotification('System initialized. All components ready for testing.');
             }, 1000);
         });
     </script>
